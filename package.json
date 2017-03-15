@@ -1,0 +1,21 @@
+{
+    "name": "wallet-monitor",
+    "version": "1.0.0",
+    "description": "A crypto-currency wallet monitoring and miner program for solo mining.",
+    "license": "GPL-3.0",
+    "author": "Felix Brucker",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/felixbrucker/wallet-monitor.git"
+    },
+    "main": "index.js",
+    "scripts": {
+        "start": "node ."
+    },
+    "dependencies": {
+        "jayson": "^2.0.3"
+    },
+    "engines": {
+        "node": ">=v7.6.0"
+    }
+}
