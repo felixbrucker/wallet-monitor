@@ -15,7 +15,9 @@
         "start": "node ."
     },
     "dependencies": {
-        "jayson": "^2.0.3"
+        "jayson": "^2.0.3",
+        "express": "^4.15.2",
+        "socket.io": "^1.7.3"
     },
     "engines": {
         "node": ">=v7.6.0"

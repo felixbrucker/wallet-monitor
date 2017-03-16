@@ -7,7 +7,9 @@ module.exports = {
             port: 29200,            // JSON-RPC port
             user: 'myuser',         // JSON-RPC username
             pass: 'mypass',         // JSON-RPC password
-            limit: 20000,           // nethashrate limit in h/s, mining is disabled if nethashrate is above this limit
+            blocktime: 150,         // blocktime in seconds
+            ttfLimit: 600,          // start mining when TTF is below this limit (minutes)
+            ownHashrate: 400,       // personal hashrate in h/s which will hit the wallet
         },
     ],
 };
