@@ -13,13 +13,15 @@ app.get('/', (req, res) => {
 });
 
 io.sockets.on('connection', (socket) => {
-    socket.emit('bestWallet', {
-        name: stats.bestWallet.name,
-        user: stats.bestWallet.user,
-        pass: stats.bestWallet.pass,
-        url: `http://${stats.bestWallet.hostname}:${stats.bestWallet.port}`,
-        algo: stats.bestWallet.algo,
-    });
+    if (stats.bestWallet !== null) {
+        socket.emit('bestWallet', {
+            name: stats.bestWallet.name,
+            user: stats.bestWallet.user,
+            pass: stats.bestWallet.pass,
+            url: `http://${stats.bestWallet.hostname}:${stats.bestWallet.port}`,
+            algo: stats.bestWallet.algo,
+        });
+    }
 });
 
 function sendBestWalletToAll() {

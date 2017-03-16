@@ -7,9 +7,12 @@ const wallets = [];
 
 function init() {
     config.wallets.forEach((wallet) => {
-        const tmp = Object.assign({}, wallet);
-        tmp.rpcClient = jayson.client.http(`http://${wallet.user}:${wallet.pass}@${wallet.hostname}:${wallet.port}`);
-        wallets.push(tmp);
+        if (wallet.enabled) {
+            const tmp = Object.assign({}, wallet);
+            tmp.rpcClient = jayson.client.http(`http://${wallet.user}:${wallet.pass}@` +
+                `${wallet.hostname}:${wallet.port}`);
+            wallets.push(tmp);
+        }
     });
     setBestWallet();
     setInterval(setBestWallet, 3 * 60 * 1000); // check every 3 minutes
@@ -37,11 +40,16 @@ function updateTTF() {
     wallets.forEach((wallet) => {
         promises.push(wallet.rpcClient.request('getmininginfo', [])
             .then((response) => {
+                // console.log(JSON.stringify(response, null, 2));
                 if (!(response.error && !response.result === null)) {
+                    if (response.result.netmhashps) {
+                        response.result.networkhashps = response.result.netmhashps * 1000 * 1000;
+                    }
                     wallet.ttf = (response.result.networkhashps / wallet.ownHashrate) * wallet.blocktime;
                 } else {
                     wallet.ttf = 999999999999;
                 }
+                console.log(`TTF ${wallet.name}: ${(wallet.ttf / 60 / 60).toFixed(1)} h`);
             })
             .catch((err) => {
                 console.error(err);
