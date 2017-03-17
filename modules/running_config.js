@@ -1,19 +1,24 @@
 const jayson = require('jayson/promise');
-const config = require('../config');
+const config = require('./config');
 const stats = require('./stats');
 
 const runningConfig = {
     wallets: [],
-    init: () => {
-        config.wallets.forEach((wallet) => {
-            if (wallet.enabled) {
-                const tmp = Object.assign({}, wallet);
-                tmp.rpcClient = jayson.client.http(`http://${wallet.user}:${wallet.pass}@` +
-                    `${wallet.hostname}:${wallet.port}`);
-                runningConfig.wallets.push(tmp);
-            }
-        });
-    },
+    init: () =>
+        config.init()
+            .then(() => {
+                config.wallets.forEach((wallet) => {
+                    if (wallet.enabled) {
+                        const tmp = Object.assign({}, wallet);
+                        tmp.rpcClient = jayson.client.http(`http://${wallet.user}:${wallet.pass}@` +
+                            `${wallet.hostname}:${wallet.port}`);
+                        runningConfig.wallets.push(tmp);
+                    }
+                });
+            })
+            .catch((err) => {
+                console.log(err.message);
+            }),
     addHashrate: (algo, hashrate) => {
         runningConfig.wallets.forEach((wallet) => {
             if (wallet.algo === algo) {

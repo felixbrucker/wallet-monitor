@@ -1,13 +1,13 @@
 const runningConfig = require('./modules/running_config');
 const server = require('./controller/server');
 
-runningConfig.init();
-runningConfig.setBestWallet()
-.then((broadcast) => {
-    if (broadcast) {
-        server.sendBestWalletToAll();
-    }
-});
+runningConfig.init()
+    .then(() => runningConfig.setBestWallet())
+    .then((broadcast) => {
+        if (broadcast) {
+            server.sendBestWalletToAll();
+        }
+    });
 setInterval(() => {
     runningConfig.setBestWallet()
         .then((broadcast) => {
