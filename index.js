@@ -22,15 +22,15 @@ function setBestWallet() {
     updateTTF()
         .then(() => {
             const tempBestWallet = getBestWallet();
-            if (tempBestWallet !== null) {
-                if (stats.bestWallet !== tempBestWallet) {
-                    // switch!
-                    stats.setBestWallet(tempBestWallet);
-                    console.log(`New best Wallet: ${stats.bestWallet.name}`);
-                    server.sendBestWalletToAll();
+            if (stats.bestWallet !== tempBestWallet) {
+                if (tempBestWallet === null) {
+                    console.log('No Wallet with low enough TTF');
+                } else {
+                    console.log(`New best Wallet: ${tempBestWallet.name}`);
                 }
-            } else {
-                console.log('No Wallet with low enough TTF');
+                // switch!
+                stats.setBestWallet(tempBestWallet);
+                server.sendBestWalletToAll();
             }
         });
 }
@@ -41,7 +41,7 @@ function updateTTF() {
         promises.push(wallet.rpcClient.request('getmininginfo', [])
             .then((response) => {
                 // console.log(JSON.stringify(response, null, 2));
-                if (!(response.error && !response.result === null)) {
+                if (!(response.error || response.result === null)) {
                     if (response.result.netmhashps) {
                         response.result.networkhashps = response.result.netmhashps * 1000 * 1000;
                     }
