@@ -32,15 +32,17 @@ io.sockets.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         // remove hashrates from ownhashrates
-        hashrateArray.forEach((entry) => {
-            runningConfig.delHashrate(entry.algo, entry.hashrate);
-        });
-        runningConfig.setBestWallet(true)
-            .then((broadcast) => {
-                if (broadcast) {
-                    sendBestWalletToAll();
-                }
+        if (hashrateArray !== null) {
+            hashrateArray.forEach((entry) => {
+                runningConfig.delHashrate(entry.algo, entry.hashrate);
             });
+            runningConfig.setBestWallet(true)
+                .then((broadcast) => {
+                    if (broadcast) {
+                        sendBestWalletToAll();
+                    }
+                });
+        }
     });
 });
 
