@@ -55,6 +55,7 @@ function sendBestWalletToAll() {
             pass: stats.bestWallet.pass,
             url: `http://${stats.bestWallet.hostname}:${stats.bestWallet.port}`,
             algo: stats.bestWallet.algo,
+            addr: stats.bestWallet.addr,
         };
     }
     io.sockets.emit('bestWallet', wallet);
